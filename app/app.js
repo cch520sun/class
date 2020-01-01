@@ -14,11 +14,12 @@
 
 var express = require('express');
 var app = express();
+var request = require('request');
 
-app.get('/', function (req, res) {
-  res.send('<table border=1><tr><td>Name</td><td>XX</td></td></tr><tr><td>Id</td><td>YY</td></tr><tr><td>Adress</td><td>XX</td></tr></table></body>');
-});
-
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+request('https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw&json=1&delay=0&_=1577865150892', { json: true }, function(err, res, body) {
+  app
+    .get('/', function (req, res) {
+      res.send(body.msgArray[0]);
+    })
+    .listen(3000);
 });
